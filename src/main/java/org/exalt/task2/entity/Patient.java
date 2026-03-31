@@ -4,15 +4,16 @@ import jakarta.persistence.*;
 import lombok.Data;
 import lombok.ToString;
 
+import java.time.LocalDate;
 import java.util.List;
 
 /**
- * Represents a doctor in the hospital system.
+ * Represents a patient in the hospital system.
  */
 @Entity
-@Table(name = "doctors")
+@Table(name = "patients")
 @Data
-public class Doctor {
+public class Patient {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -27,13 +28,15 @@ public class Doctor {
     @Column(nullable = false, unique = true)
     private String email;
 
-    @Column(nullable = false, unique = true)
-    private String licenseNumber;
-
-    private String specialty;
     private String phone;
+    private LocalDate dateOfBirth;
+    private String bloodGroup;
 
-    @OneToMany(mappedBy = "doctor", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "patient", fetch = FetchType.LAZY)
     @ToString.Exclude
     private List<Appointment> appointments;
+
+    @OneToOne(mappedBy = "patient", cascade = CascadeType.ALL)
+    @ToString.Exclude
+    private UserAccount userAccount;
 }

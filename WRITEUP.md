@@ -1,52 +1,33 @@
-# Phase 1 Written Tasks
+## Phase 2 — JPQL vs Native SQL
 
-## Properties vs YAML
+**JPQL** works with Java class and field names:
+SELECT a FROM Appointment a WHERE a.doctor.id = :doctorId
 
-`.properties` uses flat key=value format:
-spring.datasource.url=jdbc:mysql://localhost:3306/hospital_db
+**Native SQL** works with actual table and column names:
+SELECT * FROM appointments WHERE patient_id = :pid
 
-`.yml` uses indented hierarchical format:
-spring:
-datasource:
-url: jdbc:mysql://localhost:3306/hospital_db
+Use JPQL when you want database independence and type safety.
+Use native SQL when you need DB-specific features like
+LIMIT, complex joins, or stored procedures.
 
-For a team project I would choose `.yml` because it is easier
-to read, avoids repetition of prefixes, and groups related
-config visually.
+## Hibernate Caching
 
-## Constructor vs Setter vs Field Injection
+**First-level cache**: automatic, per-session (transaction).
+Calling findById twice in the same transaction only hits
+the DB once — the second call comes from memory.
 
-**Field injection** (@Autowired on field):
-- Simplest to write but worst practice
-- Cannot be used in tests without Spring context
-- Hides dependencies
-
-**Setter injection** (@Autowired on setter method):
-- Allows optional dependencies
-- Still not ideal for required dependencies
-
-**Constructor injection** (preferred):
-- Dependencies are explicit and required
-- Works in plain unit tests without Spring
-- Supports immutability (final fields)
-- Recommended by Spring team and this project
-
-## Bean Scopes
-
-- Singleton: one instance shared across the entire application
-- Prototype: new instance created every time the bean is requested
-- Request: new instance created per HTTP request (web apps only)
+**Second-level cache**: shared across sessions. Configured
+with @Cacheable. Survives between different transactions.
 ```
 
 ---
 
-## Phase 1 Checklist ✅
+## Phase 2 Checklist ✅
 ```
-✅ Spring Boot project builds and runs
-✅ application.yml configured
-✅ HospitalConfig with @Bean for ModelMapper and PasswordEncoder
-✅ AuditService with @PostConstruct and @PreDestroy
-✅ Singleton, Prototype, Request scope demonstrated
-✅ Unit test proving singleton vs prototype behaviour
-✅ HospitalBootstrapRunner printing startup banner
-✅ WRITEUP.md with written answers
+✅ 4 JPA entities with relationships and constraints
+✅ @PrePersist on Appointment sets createdAt automatically
+✅ 3 repositories with derived queries
+✅ JPQL and native SQL queries in AppointmentRepository
+✅ @Cacheable and @CacheEvict on DoctorService
+✅ First-level cache test
+✅ WRITEUP.md updated
