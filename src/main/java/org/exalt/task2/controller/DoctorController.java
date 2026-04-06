@@ -1,7 +1,8 @@
 package org.exalt.task2.controller;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.exalt.task2.entity.Doctor;
+import org.exalt.task2.dto.DoctorDTO;
 import org.exalt.task2.service.DoctorService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,18 +17,18 @@ public class DoctorController {
     private final DoctorService doctorService;
 
     @GetMapping
-    public ResponseEntity<List<Doctor>> getAllDoctors() {
+    public ResponseEntity<List<DoctorDTO>> getAllDoctors() {
         return ResponseEntity.ok(doctorService.getAllDoctors());
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Doctor> getDoctorById(@PathVariable Long id) {
+    public ResponseEntity<DoctorDTO> getDoctorById(@PathVariable Long id) {
         return ResponseEntity.ok(doctorService.getDoctorById(id));
     }
 
     @PostMapping
-    public ResponseEntity<Doctor> createDoctor(@RequestBody Doctor doctor) {
-        return ResponseEntity.status(HttpStatus.CREATED).body(doctorService.createDoctor(doctor));
+    public ResponseEntity<DoctorDTO> createDoctor(@Valid @RequestBody DoctorDTO dto) {
+        return ResponseEntity.status(HttpStatus.CREATED).body(doctorService.createDoctor(dto));
     }
 
     @DeleteMapping("/{id}")
