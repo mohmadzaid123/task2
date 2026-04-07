@@ -4,9 +4,6 @@ import jakarta.persistence.*;
 import lombok.Data;
 import org.exalt.task2.enums.UserRole;
 
-/**
- * Represents a user account linked to a patient or doctor.
- */
 @Entity
 @Table(name = "user_accounts")
 @Data
@@ -31,4 +28,8 @@ public class UserAccount {
     @OneToOne
     @JoinColumn(name = "patient_id")
     private Patient patient;
+
+    @OneToOne
+    @JoinColumn(name = "doctor_id")
+    private Doctor doctor;
 }
