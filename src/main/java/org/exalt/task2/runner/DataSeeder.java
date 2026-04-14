@@ -20,6 +20,8 @@ public class DataSeeder implements CommandLineRunner {
     @Override
     public void run(String... args) {
         // only seed if no users exist
+
+        System.out.println("User count:"+ userAccountRepository.count());
         if (userAccountRepository.count() > 0) return;
 
         createUser("admin",   "admin123",   UserRole.ADMIN);

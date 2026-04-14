@@ -23,6 +23,6 @@ server:
 
 logging:
   level:
-    org.hibernate.SQL: DEBUG
-    org.hibernate.orm.jdbc.bind: TRACE
+    org.hibernate.SQL: off
+    org.hibernate.orm.jdbc.bind: off
     org.exalt.task2: INFO

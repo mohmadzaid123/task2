@@ -12,9 +12,9 @@ public class HospitalConfig {
 
     @Bean
     public ModelMapper modelMapper() {
-//        ObjectMapper
+
         ModelMapper modelMapper = new ModelMapper();
-//        modelMapper.
+
         return modelMapper;
     }
 
