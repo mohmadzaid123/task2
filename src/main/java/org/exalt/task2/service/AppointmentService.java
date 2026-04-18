@@ -23,6 +23,7 @@ public class AppointmentService {
     private final DoctorRepository doctorRepository;
     private final PatientRepository patientRepository;
     private final ModelMapper modelMapper;
+    private final PrescriptionService prescriptionService;
 
     public List<AppointmentDTO> getAllAppointments() {
         return appointmentRepository.findAll()
@@ -80,9 +81,16 @@ public class AppointmentService {
 
     public AppointmentDTO completeAppointment(Long id) {
         Appointment appointment = appointmentRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("Appointment not found: " + id));
+                .orElseThrow(() -> new EntityNotFoundException(
+                        "Appointment not found: " + id));
 
+        // 1 — update status in MySQL
         appointment.setStatus(AppointmentStatus.COMPLETED);
-        return modelMapper.map(appointmentRepository.save(appointment), AppointmentDTO.class);
+        Appointment saved = appointmentRepository.save(appointment);
+
+        // 2 — automatically trigger skeleton prescription in MongoDB
+        prescriptionService.initializePrescription(id);
+
+        return modelMapper.map(saved, AppointmentDTO.class);
     }
 }
