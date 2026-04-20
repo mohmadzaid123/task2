@@ -65,9 +65,15 @@ class PrescriptionServiceTest {
     @Test
     void addPrescription_linkedToCompletedAppointment_success() {
         when(appointmentRepository.findById(1L)).thenReturn(Optional.of(appointment));
-        when(modelMapper.map(dto, Prescription.class)).thenReturn(prescription);
+
+        // mock finding existing skeleton
+        when(prescriptionRepository.findByAppointmentId(1L))
+                .thenReturn(List.of(prescription));
+
         when(prescriptionRepository.save(any())).thenReturn(prescription);
         when(modelMapper.map(prescription, PrescriptionDTO.class)).thenReturn(dto);
+
+        // removed: when(modelMapper.map(dto, Prescription.class))... ← was unnecessary
 
         PrescriptionDTO result = prescriptionService.addPrescription(dto);
 

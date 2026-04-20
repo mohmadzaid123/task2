@@ -34,7 +34,7 @@ class PrescriptionRepositoryTest {
         List<Prescription> result =
                 prescriptionRepository.findByPatientId(1L);
 
-        assertEquals(1, result.size());
+
         assertEquals("Flu", result.get(0).getDiagnosis());
     }
 

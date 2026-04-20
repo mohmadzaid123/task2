@@ -1,6 +1,7 @@
 package org.exalt.task2.service;
 
 import org.exalt.task2.dto.AppointmentDTO;
+import org.exalt.task2.dto.PrescriptionDTO;
 import org.exalt.task2.entity.Appointment;
 import org.exalt.task2.entity.Doctor;
 import org.exalt.task2.entity.Patient;
@@ -33,6 +34,7 @@ class AppointmentServiceTest {
     @Mock private DoctorRepository doctorRepository;
     @Mock private PatientRepository patientRepository;
     @Mock private ModelMapper modelMapper;
+    @Mock private PrescriptionService prescriptionService;
 
     @InjectMocks private AppointmentService appointmentService;
 
@@ -84,7 +86,7 @@ class AppointmentServiceTest {
         AppointmentDTO result = appointmentService.bookAppointment(dto);
 
         assertNotNull(result);
-        verify(appointmentRepository, times(1)).save(any());
+        verify(appointmentRepository, times(1)).save(any()); //times(1) for save
     }
 
     // ─── Test 2: double booking ───────────────────────────────────
@@ -133,10 +135,14 @@ class AppointmentServiceTest {
         when(appointmentRepository.save(any())).thenReturn(appointment);
         when(modelMapper.map(appointment, AppointmentDTO.class)).thenReturn(dto);
 
+        // mock the prescription initialization  ← add this
+        when(prescriptionService.initializePrescription(1L)).thenReturn(new PrescriptionDTO());
+
         AppointmentDTO result = appointmentService.completeAppointment(1L);
 
         assertNotNull(result);
         assertEquals(AppointmentStatus.COMPLETED, appointment.getStatus());
         verify(appointmentRepository, times(1)).save(appointment);
+        verify(prescriptionService, times(1)).initializePrescription(1L); // ← verify it was called
     }
 }

@@ -52,8 +52,6 @@ public class GlobalExceptionHandler {
     private ResponseEntity<Map<String, Object>> buildResponse(HttpStatus status, String message) {
 
 
-
-
         return buildResponse(status, message, "");
     }
     }
