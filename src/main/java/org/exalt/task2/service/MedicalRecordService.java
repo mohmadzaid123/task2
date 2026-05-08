@@ -5,6 +5,7 @@ import org.exalt.task2.document.MedicalRecord;
 import org.exalt.task2.dto.MedicalRecordDTO;
 import org.exalt.task2.exception.EntityNotFoundException;
 import org.exalt.task2.repository.MedicalRecordRepository;
+import org.exalt.task2.repository.PatientRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 import java.time.LocalDate;
@@ -15,9 +16,13 @@ import java.util.List;
 public class MedicalRecordService {
 
     private final MedicalRecordRepository medicalRecordRepository;
+    private final PatientRepository patientRepository;
     private final ModelMapper modelMapper;
 
     public MedicalRecordDTO addMedicalRecord(MedicalRecordDTO dto) {
+        patientRepository.findById(dto.getPatientId())
+                .orElseThrow(() -> new EntityNotFoundException(
+                        "Patient not found with id: " + dto.getPatientId()));
         MedicalRecord record = modelMapper.map(dto, MedicalRecord.class);
         record.setRecordDate(LocalDate.now());
         return modelMapper.map(
