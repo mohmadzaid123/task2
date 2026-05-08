@@ -4,7 +4,6 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.exalt.task2.dto.AppointmentDTO;
 import org.exalt.task2.service.AppointmentService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -15,7 +14,6 @@ import java.util.List;
 @RequiredArgsConstructor
 public class AppointmentController {
 
-    @Autowired
     private final AppointmentService appointmentService;
 
     @GetMapping

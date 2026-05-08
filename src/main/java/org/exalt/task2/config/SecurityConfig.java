@@ -12,8 +12,6 @@ import org.springframework.security.config.annotation.authentication.configurati
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 
@@ -60,6 +58,9 @@ public class SecurityConfig {
                         // Actuator
                         .requestMatchers("/actuator/**").hasRole("ADMIN")
 
+                        // Swagger UI
+                        .requestMatchers("/swagger-ui/**", "/v3/api-docs/**", "/swagger-ui.html").permitAll()
+
                         // Everything else requires authentication
                         .anyRequest().authenticated()
                 )
@@ -72,14 +73,8 @@ public class SecurityConfig {
     public AuthenticationProvider authenticationProvider() {
         DaoAuthenticationProvider provider = new DaoAuthenticationProvider(); // no args
         provider.setUserDetailsService(userDetailsService); // set the service
-        provider.setPasswordEncoder(passwordEncoder());     // set the encoder
+        provider.setPasswordEncoder(passwordEncoder);
         return provider;
-    }
-
-
-    @Bean("hospitalPasswordEncoder")
-    public PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
     }
 
     @Bean
