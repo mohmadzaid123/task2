@@ -1,0 +1,18 @@
+# Render profile — reads connection strings from environment variables.
+server:
+  port: ${PORT:8081}
+
+spring:
+  datasource:
+    url: ${MYSQL_URL:jdbc:mysql://localhost:3306/hospital_db}
+    username: ${MYSQL_USERNAME:root}
+    password: ${MYSQL_PASSWORD:0000}
+
+  data:
+    mongodb:
+      uri: ${MONGODB_URI:mongodb://localhost:27017/hospital_db}
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: false

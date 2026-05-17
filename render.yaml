@@ -1,0 +1,29 @@
+# Render Blueprint for Task 2 (Hospital monolith)
+#
+# External infrastructure (free tiers):
+#   MySQL   → PlanetScale / Railway / Aiven
+#   MongoDB → MongoDB Atlas free tier (M0)
+
+services:
+  - type: web
+    name: hospital-api
+    runtime: docker
+    dockerfilePath: Dockerfile
+    dockerContext: .
+    plan: free
+    healthCheckPath: /actuator/health
+    envVars:
+      - key: SPRING_PROFILES_ACTIVE
+        value: render
+
+      # ── MySQL ──
+      - key: MYSQL_URL
+        sync: false   # set manually after creating the DB
+      - key: MYSQL_USERNAME
+        sync: false
+      - key: MYSQL_PASSWORD
+        sync: false
+
+      # ── MongoDB ──
+      - key: MONGODB_URI
+        sync: false
